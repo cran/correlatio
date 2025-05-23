@@ -4,7 +4,7 @@
 #
 #' @param data A data.frame with two columns, which shall be correlated by Pearson's product-moment method.
 #
-#' @param visualize A single boolean value (default: TRUE), which determines whether the data shall be visualized in two plots.
+#' @param visualize A single boolean value (default: TRUE), which determines whether the data shall be visualized.
 #
 #' @return a list with a data.frame (name: dat), a list (name: details), and two graphs as elements (plot1 and plot2).
 #' dat contains these five columns:
@@ -60,10 +60,6 @@ corrio <- function(data=NULL, visualize=TRUE) {
         stop("The function argument 'data' must be of class data.frame. It must contain exactly two columns, which shall be analyzed by the Pearson product-moment correlation method.")
     }
     
-    if(!is.data.frame(x=data)) {
-        data <- data.frame(data)
-    }
-    
     # Both columns of the data.frame must be numeric.
     bothNumeric <- unlist(lapply(data, FUN=class))
     if(!all(bothNumeric == "numeric")) {
@@ -76,7 +72,11 @@ corrio <- function(data=NULL, visualize=TRUE) {
     }
     
     # Error handling. Stop.
-
+    
+    if(tibble::is.tibble(data)) {
+        data <- data.frame(data)
+    }
+    
     # ---------------------------------------
     variable1 <- data[,1]
     variable2 <- data[,2]
